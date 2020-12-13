@@ -8,31 +8,54 @@ router.post("/signup", (req, res, next) => {
     const username = req.headers.name
     const password = req.headers.password
     const ip = req.ip
-    const result = db.addUser(username, password, ip, res)
+    if (username || password) {
+        db.addUser(username, password, ip, res)
+    } else {
+        res.send({
+            status: "failure",
+            details: "mandatory not found.(name, password)"
+        })
+    }
 })
 
 router.post("/login", (req, res, next) => {
     const username = req.headers.name
     const password = req.headers.password
     const ip = req.ip
-    db.login(username, password, ip, res)
+    if (username || password) {
+        db.login(username, password, ip, res)
+    } else {
+        res.send({
+            status: "failure",
+            details: "mandatory not found.(name, password)"
+        })
+    }
 })
 router.post("/add/:user_id", (req, res, next) => {
     const userid = req.params['user_id']
     const username = req.query['username']
     const crushname = req.query['crushname']
     const ip = req.ip
-    db.addToCrushList(userid, username, crushname, ip, res)
-    // res.send({
-    //     userid,
-    //     username,
-    //     crushname
-    // })
+    if (userid || username || crushname) {
+        db.addToCrushList(userid, username, crushname, ip, res)
+    } else {
+        res.send({
+            status: "failure",
+            details: "mandatory not found.(username, crushname)"
+        })
+    }
 })
 
 router.post("/getlist", (req, res, next) => {
     const authtoken = req.headers.authtoken
-    db.getList(authtoken, res)
+    if (authtoken) {
+        db.getList(authtoken, res)
+    } else {
+        res.send({
+            status: "failure",
+            details: "mandatory not found.(authtoken)"
+        })
+    }
 })
 
 

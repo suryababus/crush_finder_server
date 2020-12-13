@@ -12,7 +12,7 @@ const { rejects } = require('assert');
 
 con.connect(function (err) {
     if (err) throw err;
-    console.log("Connected!");
+    console.log("DB Connected!");
     connected = true
 });
 
