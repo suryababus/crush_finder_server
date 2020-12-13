@@ -57,6 +57,9 @@ router.post("/getlist", (req, res, next) => {
         })
     }
 })
+router.post("/time", (req, res, next) => {
+    res.send(new Date())
+})
 
 
 module.exports = router
