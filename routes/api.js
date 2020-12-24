@@ -57,7 +57,7 @@ router.post("/getlist", (req, res, next) => {
         })
     }
 })
-router.post("/time", (req, res, next) => {
+router.get("/time", (req, res, next) => {
     res.send(new Date())
 })
 
