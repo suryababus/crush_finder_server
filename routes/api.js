@@ -3,7 +3,6 @@ var router = express.Router();
 var db = require('./database')
 
 
-
 router.post("/signup", (req, res, next) => {
     const username = req.headers.name
     const password = req.headers.password

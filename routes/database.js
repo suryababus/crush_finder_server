@@ -1,5 +1,6 @@
 var mysql = require('mysql');
 const util = require('util');
+var jwt = require('jsonwebtoken');
 var con = mysql.createConnection({
     host: "localhost",
     user: "root",
@@ -55,8 +56,7 @@ exports.login = (name, password, ip, res) => {
                     response.status = "failure"
                     response.details = "Password mismatch"
                 } else {
-                    const token = crypto.randomBytes(48).toString('hex');
-                    var sql = `INSERT INTO crushfinder.authtable (authtoken,user_id) VALUES ('${token}','${user.id}')`;
+                    const token = jwt.sign({ user_id: user.id, user_name: user.name }, 'AbimanyuLifeLove');
                     console.log(token)
                     await query(sql).then(data => {
                         console.log(data)
@@ -82,11 +82,15 @@ exports.login = (name, password, ip, res) => {
     })
 }
 
-validateAuthtoken = async (authtoken) => {
-    var sql = `SELECT user_id from crushfinder.authtable where authtoken='${authtoken}'`;
-    const result = await query(sql)
+validateAuthtoken = async (token) => {
+    try {
+        var decoded = jwt.verify(token, 'AbimanyuLifeLove');
+        return decoded
+    } catch (err) {
+        // err
+    }
 
-    return result
+    return null
 }
 
 
@@ -110,12 +114,12 @@ exports.addToCrushList = (userid, username, crushname, ip, res) => {
     })
 }
 
-exports.getList = async (authtoken, res) => {
-    const data = await validateAuthtoken(authtoken)
+exports.getList = async (token, res) => {
+    const data = await validateAuthtoken(token)
     console.log(data)
     var response = {}
-    if (data[0]) {
-        const user_id = data[0].user_id
+    if (data) {
+        const user_id = data.user_id
         console.log(user_id)
         var sql = `SELECT username,crushname,createdtime from crushfinder.crushlist where user_id='${user_id}' limit 100`;
         await query(sql).then((data) => {
