@@ -11,9 +11,9 @@ mongoose.connect('mongodb://localhost/calculator')
     })
 
 const formulaSchema = new Schema({
-    name: String,
-    varibale: [String],
-    equation: String,
+    title: String,
+    varibales: [String],
+    formula: String,
     createdTime: { type: Date, default: Date.now },
     active: Boolean
 })
@@ -50,6 +50,23 @@ router.post("/formulas", (req, res, next) => {
             details: 'formula not added'
         })
     })
+
+
+})
+
+router.delete("/formulas", (req, res, next) => {
+    const secreteKey = req.headers.key
+    const id = req.headers.id
+    if (secreteKey == "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMywidXNlcl9uYW1lIjoidGVzdHVzZXIxIiwiaWF0IjoxNjA5MTUyNTQyfQ.xHznA7hGGCAjOGFbxTfRsyOEicmYm79nutzlnSjUwCU") {
+        Formula.findOneAndDelete({ _id: id }).then(() => {
+            res.send("Success")
+        }).catch(() => {
+            res.send("failure")
+        })
+    } else {
+        res.send("failure")
+    }
+
 
 
 })
