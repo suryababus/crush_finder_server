@@ -12,7 +12,7 @@ mongoose.connect('mongodb://localhost/calculator')
 
 const formulaSchema = new Schema({
     title: String,
-    varibales: [String],
+    variables: [String],
     formula: String,
     createdTime: { type: Date, default: Date.now },
     active: Boolean
