@@ -34,6 +34,15 @@ router.get("/formulas", (req, res, next) => {
 })
 router.post("/formulas", (req, res, next) => {
     let userFormula = req.body
+    let ckey = req.headers.ckey
+    console.log(req)
+    if (ckey != "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMywidXNlcl9uYW1lIjoidGVzdHVzZXIxIiwiaWF0IjoxNjA5MTUyNTQyfQ.xHznA7hGGCAjOGFbxTfRsyOEicmYm79nutzlnSjUwCU") {
+        res.send({
+            status: "failure",
+            details: 'CKey not valid'
+        })
+        return
+    }
     userFormula.active = false
     const formula = new Formula(userFormula)
     formula.save().then((data) => {
